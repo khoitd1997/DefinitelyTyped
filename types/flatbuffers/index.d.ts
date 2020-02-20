@@ -2,6 +2,7 @@
 // Project: http://google.github.io/flatbuffers/index.html
 // Definitions by: Kamil Rojewski <kamil.rojewski@gmail.com>
 //                 Robin Giese <robin@grumpycorp.com>
+//                 Khoi Trinh <khoidinhtrinh@gmail.com>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 export { flatbuffers };
@@ -211,6 +212,12 @@ declare global {
        * Convenience function for creating Long objects.
        */
       createLong(low: number, high: number): Long;
+
+      createObjectOffset(obj: string | null | { pack: (builder:flatbuffers.Builder) => flatbuffers.Offset }): flatbuffers.Offset;
+
+      createObjectOffsetList(list: ( string | null | { pack: (builder:flatbuffers.Builder) => flatbuffers.Offset } )[]): flatbuffers.Offset[];
+
+      // createStringOffsetList(list: string[]): flatbuffers.Offset[];
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -299,6 +306,19 @@ declare global {
        * Convenience function for creating Long objects.
        */
       createLong(low: number, high: number): Long;
+
+      createObjFromUnion<T1, T2, T3 extends flatbuffers.Table, T4>(unionNamespace: T1, enumType: T2, targetEnum: string | number, unionAccessor: (obj: T3) => T3 | null): T4;
+
+      createObjListFromUnionList<T1, T2, T3, T4>(unionNamespace: T1, enumType: T2, targetEnumAccessor: (index: number) => string | number, targetEnumLength: number, unionAccessor: (index: number, obj: T3) => T3): T4;
+
+      /**
+       * A helper function for generating list for obj api
+       */
+      createScalarList<T>(listAcessor: (index: number) => T | null, listLength: number): T[];
+      
+      createStringList(listAcessor: (index: number) => string, listLength: number): string[];
+
+      createObjList<T1, T2>(listAcessor: (index: number) => T1 | null, listLength: number): T2;
     }
   }
 }
