@@ -217,7 +217,11 @@ declare global {
 
       createObjectOffsetList(list: ( string | null | { pack: (builder:flatbuffers.Builder) => flatbuffers.Offset } )[]): flatbuffers.Offset[];
 
-      // createStringOffsetList(list: string[]): flatbuffers.Offset[];
+      /**
+       * Function for creating a vector of struct in the buffer, use createObjectOffsetList 
+       * underneath but also call start and end method
+       */
+      createStructOffsetList<T>(list: T[], startFunc: (builder:flatbuffers.Builder, numElems:number) => void): flatbuffers.Offset;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
