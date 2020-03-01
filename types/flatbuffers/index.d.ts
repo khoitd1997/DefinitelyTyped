@@ -28,6 +28,12 @@ declare global {
     const float64: Float64Array;
     const isLittleEndian: boolean;
 
+    
+    /**
+     * Convenience function for creating Long objects.
+     */
+    function createLong(low: number, high: number): Long;
+
     ////////////////////////////////////////////////////////////////////////////////
 
     class Long {
