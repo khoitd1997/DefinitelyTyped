@@ -222,21 +222,21 @@ declare global {
             createLong(low: number, high: number): Long;
 
             createObjectOffset(
-                obj: string | null | { pack: (builder: flatbuffers.Builder) => flatbuffers.Offset },
-            ): flatbuffers.Offset;
+                obj: string | null | { pack: (builder: Builder) => Offset },
+            ): Offset;
 
             createObjectOffsetList(
-                list: (string | null | { pack: (builder: flatbuffers.Builder) => flatbuffers.Offset })[],
-            ): flatbuffers.Offset[];
+                list: (string | null | { pack: (builder: Builder) => Offset })[],
+            ): Offset[];
 
             /**
              * Function for creating a vector of struct in the buffer, use createObjectOffsetList
              * underneath but also call start and end method
              */
-            createStructOffsetList<T>(
-                list: T[],
-                startFunc: (builder: flatbuffers.Builder, numElems: number) => void,
-            ): flatbuffers.Offset;
+            createStructOffsetList(
+                list: any[],
+                startFunc: (builder: Builder, numElems: number) => void,
+            ): Offset;
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -326,20 +326,20 @@ declare global {
              */
             createLong(low: number, high: number): Long;
 
-            createObjFromUnion<T1, T2, T3 extends flatbuffers.Table, T4>(
-                unionNamespace: T1,
-                enumType: T2,
+            createObjFromUnion<T1 extends Table>(
+                unionNamespace: any | null,
+                enumType: any,
                 targetEnum: string | number,
-                unionAccessor: (obj: T3) => T3 | null,
-            ): T4;
+                unionAccessor: (obj: T1) => T1 | null,
+            ): any;
 
-            createObjListFromUnionList<T1, T2, T3, T4>(
-                unionNamespace: T1,
-                enumType: T2,
+            createObjListFromUnionList<T1>(
+                unionNamespace: any | null,
+                enumType: any,
                 targetEnumAccessor: (index: number) => string | number,
                 targetEnumLength: number,
-                unionAccessor: (index: number, obj: T3) => T3,
-            ): T4;
+                unionAccessor: (index: number, obj: T1) => T1,
+            ): any;
 
             /**
              * A helper function for generating list for obj api
@@ -348,7 +348,7 @@ declare global {
 
             createStringList(listAcessor: (index: number) => string, listLength: number): string[];
 
-            createObjList<T1, T2>(listAcessor: (index: number) => T1 | null, listLength: number): T2;
+            createObjList(listAcessor: (index: number) => any | null, listLength: number): any;
         }
     }
 }
