@@ -226,7 +226,7 @@ declare global {
             ): Offset;
 
             createObjectOffsetList(
-                list: (string | null | { pack: (builder: Builder) => Offset })[],
+                list: Array<(string | null | { pack: (builder: Builder) => Offset })>,
             ): Offset[];
 
             /**
@@ -327,14 +327,14 @@ declare global {
             createLong(low: number, high: number): Long;
 
             createObjFromUnion<T1 extends Table>(
-                unionNamespace: any | null,
+                unionNamespace: any,
                 enumType: any,
                 targetEnum: string | number,
                 unionAccessor: (obj: T1) => T1 | null,
             ): any;
 
             createObjListFromUnionList<T1>(
-                unionNamespace: any | null,
+                unionNamespace: any,
                 enumType: any,
                 targetEnumAccessor: (index: number) => string | number,
                 targetEnumLength: number,
@@ -348,7 +348,7 @@ declare global {
 
             createStringList(listAcessor: (index: number) => string, listLength: number): string[];
 
-            createObjList(listAcessor: (index: number) => any | null, listLength: number): any;
+            createObjList(listAcessor: (index: number) => any, listLength: number): any;
         }
     }
 }
