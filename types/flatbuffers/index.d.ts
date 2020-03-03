@@ -9,6 +9,13 @@ export { flatbuffers };
 
 declare global {
     namespace flatbuffers {
+        interface ObjApiStruct {
+            pack: (builder: Builder) => Offset;
+        }
+        interface NonObjApiType {
+            unpack: () => ObjApiStruct;
+        }
+
         type Offset = number;
 
         interface Table {
@@ -221,22 +228,15 @@ declare global {
              */
             createLong(low: number, high: number): Long;
 
-            createObjectOffset(
-                obj: string | null | { pack: (builder: Builder) => Offset },
-            ): Offset;
+            createObjectOffset(obj: string | null | ObjApiStruct): Offset;
 
-            createObjectOffsetList(
-                list: Array<(string | null | { pack: (builder: Builder) => Offset })>,
-            ): Offset[];
+            createObjectOffsetList(list: Array<string | null | ObjApiStruct>): Offset[];
 
             /**
              * Function for creating a vector of struct in the buffer, use createObjectOffsetList
              * underneath but also call start and end method
              */
-            createStructOffsetList(
-                list: any[],
-                startFunc: (builder: Builder, numElems: number) => void,
-            ): Offset;
+            createStructOffsetList(list: any[], startFunc: (builder: Builder, numElems: number) => void): Offset;
         }
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -326,21 +326,6 @@ declare global {
              */
             createLong(low: number, high: number): Long;
 
-            createObjFromUnion<T1 extends Table>(
-                unionNamespace: any,
-                enumType: any,
-                targetEnum: string | number,
-                unionAccessor: (obj: T1) => T1 | null,
-            ): any;
-
-            createObjListFromUnionList<T1>(
-                unionNamespace: any,
-                enumType: any,
-                targetEnumAccessor: (index: number) => string | number,
-                targetEnumLength: number,
-                unionAccessor: (index: number, obj: T1) => T1,
-            ): any;
-
             /**
              * A helper function for generating list for obj api
              */
@@ -348,7 +333,7 @@ declare global {
 
             createStringList(listAcessor: (index: number) => string, listLength: number): string[];
 
-            createObjList(listAcessor: (index: number) => any, listLength: number): any;
+            createObjList(listAcessor: (index: number) => NonObjApiType, listLength: number): any;
         }
     }
 }
