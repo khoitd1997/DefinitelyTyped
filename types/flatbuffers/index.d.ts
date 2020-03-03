@@ -12,8 +12,8 @@ declare global {
         interface ObjApiStruct {
             pack: (builder: Builder) => Offset;
         }
-        interface NonObjApiType {
-            unpack: () => ObjApiStruct;
+        interface NonObjApiType<T extends ObjApiStruct> {
+            unpack: () => T;
         }
 
         type Offset = number;
@@ -326,14 +326,14 @@ declare global {
              */
             createLong(low: number, high: number): Long;
 
+            createScalarList<T>(listAcessor: (index: number) => T | null, listLength: number): T[];
+            
+            createStringList(listAcessor: (index: number) => string, listLength: number): string[];
+            
             /**
              * A helper function for generating list for obj api
              */
-            createScalarList<T>(listAcessor: (index: number) => T | null, listLength: number): T[];
-
-            createStringList(listAcessor: (index: number) => string, listLength: number): string[];
-
-            createObjList(listAcessor: (index: number) => NonObjApiType, listLength: number): any;
+            createObjList<T extends ObjApiStruct>(listAcessor: (index: number) => (NonObjApiType<T> | null), listLength: number): T[];
         }
     }
 }
