@@ -230,7 +230,7 @@ declare global {
 
             createObjectOffset(obj: string | null | ObjApiStruct): Offset;
 
-            createObjectOffsetList(list: Array<string | null | ObjApiStruct>): Offset[];
+            createObjectOffsetList(list: Array<string | ObjApiStruct>): Offset[];
 
             /**
              * Function for creating a vector of struct in the buffer, use createObjectOffsetList
@@ -303,6 +303,16 @@ declare global {
              * @param optionalEncoding Defaults to UTF16_STRING
              */
             __string(offset: number, optionalEncoding?: Encoding): string | Uint8Array;
+
+            /**
+             * Handle unions that can contain string as its member, if a Table-derived type 
+             * then initialize it, if a string then return a new one
+             * 
+             * WARNING: strings are immutable in JS so we can't change the string that the user
+             * gave us, this makes the behaviour of __union_with_string different compared to __union
+             *
+             */
+            __union_with_string<T extends Table | string>(o: T, offset: number): T;
 
             /**
              * Retrieve the relative offset stored at "offset"
